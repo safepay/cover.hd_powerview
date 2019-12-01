@@ -4,16 +4,14 @@ import requests
 import voluptuous as vol
 
 from homeassistant.components.cover import (
-    CoverDevice, PLATFORM_SCHEMA, ATTR_POSITION, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION)
+    CoverDevice, PLATFORM_SCHEMA, ATTR_POSITION, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION, SUPPORT_STOP)
 from homeassistant.const import (
-    CONF_NAME, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
+    CONF_NAME, CONF_HOST, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
 import homeassistant.helpers.config_validation as cv
 
 from base64 import b64decode
 
 _LOGGER = logging.getLogger(__name__)
-
-CONF_HOST = 'host'
 
 DEFAULT_NAME = 'PowerView'
 
@@ -24,6 +22,9 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 _shadeIdsURL = 'http://{}/api/shadeIds'
 _shadeURL    = 'http://{}/api/shade/{}'
+
+_shadeBodyPosition = '{"shade":{"positions":{"posKind1": {} ,"position1": {} }}}'
+_shadeBodyStop = '{"shade": {"motion": "stop"}}'
 
 ############
 
@@ -94,6 +95,10 @@ class PowerView(CoverDevice):
         position = 65535
         _LOGGER.debug("Shade postion: %s", position)
 
+    async def async_stop_cover(self, **kwargs):
+        """Stop the cover."""
+        # {"shade": {"motion": "stop"}}
+
     async def async_set_cover_position(self, **kwargs):
         """Set the cover position."""
         if ATTR_POSITION in kwargs:
@@ -108,7 +113,7 @@ class PowerView(CoverDevice):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION
+        return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION | SUPPORT_STOP
 
     async def async_update(self):
         """Get the latest data and update the states."""
