@@ -23,9 +23,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 _shadeIdsURL = 'http://{}/api/shadeIds'
 _shadeURL    = 'http://{}/api/shade/{}'
 
-_shadeBodyPosition = '{"shade":{"positions":{"posKind1": {} ,"position1": {} }}}'
-_shadeBodyStop = '{"shade": {"motion": "stop"}}'
-
 ############
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
@@ -50,7 +47,6 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 class PowerView(CoverDevice):
     """Representation of PowerView cover."""
 
-    # pylint: disable=no-self-use
     def __init__(self, hass, ip_address, cover_id):
         """Initialize the cover."""
         self.hass = hass
@@ -58,9 +54,6 @@ class PowerView(CoverDevice):
         self._cover_id = cover_id
         self._available = True
         self._state = None
-
-#        self._name = cover['name']
-#        self._position = cover['positions']['position1']
 
     @property
     def name(self):
@@ -87,22 +80,75 @@ class PowerView(CoverDevice):
 
     async def async_close_cover(self, **kwargs):
         """Close the cover."""
-        position = 0
-        _LOGGER.debug("Shade postion: %s", position)
 
+        body = {
+            'shade': {
+                'positions': {
+                    'position1': 0,
+                    'posKind1': 1
+                }
+            }
+        }
+
+        url = _shadeURL.format(self._ip_address, self._cover_id)
+
+        try:
+            result = requests.put(url, data=body, timeout=10).json()
+        except (requests.exceptions.RequestException) as error:
+            _LOGGER.error("Unable to connect to PowerView: %s", error)
+            
     async def async_open_cover(self, **kwargs):
         """Open the cover."""
         position = 65535
-        _LOGGER.debug("Shade postion: %s", position)
 
+        body = {
+            'shade': {
+                'positions': {
+                    'position1': 65535,
+                    'posKind1': 1
+                }
+            }
+        }
+
+        url = _shadeURL.format(self._ip_address, self._cover_id)
+
+        try:
+            result = requests.put(url, data=body, timeout=10).json()
+        except (requests.exceptions.RequestException) as error:
+            _LOGGER.error("Unable to connect to PowerView: %s", error)
+            
     async def async_stop_cover(self, **kwargs):
         """Stop the cover."""
-        # {"shade": {"motion": "stop"}}
+        body = {"shade": {"motion": "stop"}}
+
+        url = _shadeURL.format(self._ip_address, self._cover_id)
+
+        try:
+            result = requests.put(url, data=body, timeout=10).json()
+        except (requests.exceptions.RequestException) as error:
+            _LOGGER.error("Unable to connect to PowerView: %s", error)
 
     async def async_set_cover_position(self, **kwargs):
         """Set the cover position."""
         if ATTR_POSITION in kwargs:
             position = int(kwargs[ATTR_POSITION] / 100 * 65535)
+
+        body = {
+            'shade': {
+                'positions': {
+                    'position1': position,
+                    'posKind1': 1
+                }
+            }
+        }
+
+        url = _shadeURL.format(self._ip_address, self._cover_id)
+
+        try:
+            result = requests.put(url, data=body, timeout=10).json()
+        except (requests.exceptions.RequestException) as error:
+            _LOGGER.error("Unable to connect to PowerView: %s", error)
+
         _LOGGER.debug("Shade postion: %s", position)
 
     @property
