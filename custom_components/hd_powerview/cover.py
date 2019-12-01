@@ -4,7 +4,7 @@ import requests
 import voluptuous as vol
 
 from homeassistant.components.cover import (
-    CoverDevice, PLATFORM_SCHEMA, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION)
+    CoverDevice, PLATFORM_SCHEMA, ATTR_POSITION, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION)
 from homeassistant.const import (
     CONF_NAME, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
 import homeassistant.helpers.config_validation as cv
@@ -86,16 +86,20 @@ class PowerView(CoverDevice):
 
     async def async_close_cover(self, **kwargs):
         """Close the cover."""
-        #requests.get(blindDown.format(self._ip_addr, self._code, self._id))
+        position = 0
+        _LOGGER.debug("Shade postion: %s", position)
 
     async def async_open_cover(self, **kwargs):
         """Open the cover."""
-        #requests.get(blindUp.format(self._ip_addr, self._code, self._id))
+        position = 65535
+        _LOGGER.debug("Shade postion: %s", position)
 
     async def async_set_cover_position(self, **kwargs):
-        """Stop the cover."""
-        #requests.get(blindStop.format(self._ip_addr, self._code, self._id))
-        
+        """Set the cover position."""
+        if ATTR_POSITION in kwargs:
+            position = int(kwargs[ATTR_POSITION] / 100 * 65535)
+        _LOGGER.debug("Shade postion: %s", position)
+
     @property
     def device_class(self):
         """Return the class of this device, from component DEVICE_CLASSES."""
