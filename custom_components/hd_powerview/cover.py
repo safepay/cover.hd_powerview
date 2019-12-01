@@ -76,9 +76,8 @@ class PowerView(CoverDevice):
     @property
     def is_closed(self):
         """Return if the cover is closed."""
-        if self._state in [STATE_UNKNOWN]:
-            return None
-        return self._state in [STATE_CLOSED, STATE_OPENING]
+        return self._cover_data.latest_data['positions']['position1'] < 1
+
 
     @property
     def current_cover_position(self):
