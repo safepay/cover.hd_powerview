@@ -6,7 +6,7 @@ import voluptuous as vol
 from homeassistant.components.cover import (
     CoverDevice, PLATFORM_SCHEMA, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION)
 from homeassistant.const import (
-    CONF_NAME, STATE_CLOSED, STATE_OPEN, STATE_UNKNOWN)
+    CONF_NAME, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
 import homeassistant.helpers.config_validation as cv
 
 from base64 import b64decode
@@ -76,7 +76,7 @@ class PowerView(CoverDevice):
     @property
     def is_closed(self):
         """Return if the cover is closed."""
-        if self._state in [STATE_UNKNOWN, STATE_OFFLINE]:
+        if self._state in [STATE_UNKNOWN]:
             return None
         return self._state in [STATE_CLOSED, STATE_OPENING]
 
