@@ -5,6 +5,10 @@ This will read all the shades from the hub and present them as cover.name in Hom
 
 You can then make them go up, down, stop or go to a set position via a slider.
 
+## Installation
+Copy all the files to a custom_components/hd_powerview directory in your Home Assistant folder.
+
+## Configuration
 ```yaml
 cover:
   - platform: hd_powerview
