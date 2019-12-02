@@ -6,7 +6,7 @@ import voluptuous as vol
 from homeassistant.components.cover import (
     CoverDevice, PLATFORM_SCHEMA, ATTR_POSITION, SUPPORT_OPEN, SUPPORT_CLOSE, SUPPORT_SET_POSITION, SUPPORT_STOP)
 from homeassistant.const import (
-    CONF_NAME, CONF_HOST, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN)
+    CONF_NAME, CONF_HOST, STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_UNKNOWN, ATTR_BATTERY_LEVEL)
 import homeassistant.helpers.config_validation as cv
 
 from base64 import b64decode
@@ -160,6 +160,24 @@ class PowerView(CoverDevice):
     def supported_features(self):
         """Flag supported features."""
         return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION | SUPPORT_STOP
+
+    @property
+    def device_state_attributes(self):
+        """Return the state attributes of the device."""
+        attr = {}
+
+        try:
+            if "batteryStatus" in self._cover_data.latest_data:
+                attr[ATTR_BATTERY_LEVEL] = int(
+                    self._cover_data.latest_data['batteryStrength'] / 2
+                )
+        except (ValueError, KeyError):
+            pass
+
+        attr["groupId"] = self._cover_data.latest_data['groupId']
+        attr["roomId"] = self._cover_data.latest_data['roomId']
+        attr["type"] = self._cover_data.latest_data['type']
+        return attr
 
     async def async_update(self):
         """Get the latest data and update the states."""
