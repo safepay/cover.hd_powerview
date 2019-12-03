@@ -1,8 +1,8 @@
 {
   "domain": "hd_powerview",
   "name": "PowerView",
-  "documentation": "https://",
-  "requirements": [],
+  "documentation": "https://github.com/safepay/sensor.hd_powerview/blob/master/README.md",
+  "requirements": ["pyhdpowerview==0.0.8"],
   "dependencies": [],
-  "codeowners": []
+  "codeowners": ["@safepay"]
 }
