@@ -20,7 +20,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
 })
 
-_shadeIdsURL = 'http://{}/api/shadeIds'
+_shadesURL = 'http://{}/api/shades'
 _shadeURL    = 'http://{}/api/shade/{}'
 
 ############
@@ -29,7 +29,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
     """Set up the PowerView covers."""
     ip_address = config[CONF_HOST]
 
-    cover_ids = coverData(ip_address, _shadeIdsURL)
+    cover_ids = coverData(ip_address, _shadesURL)
 
     covers = []
     try:
@@ -38,7 +38,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         _LOGGER.error("Received data error from PowerView Hub: %s", err)
         return
 
-    for cover_id in cover_ids.latest_data:
+    for cover_id in cover_ids.latest_data['shadeIds']:
         covers.append(PowerView(hass, ip_address, cover_id))
 
     async_add_entities(covers, True)
