@@ -38,7 +38,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         _LOGGER.error("Received data error from PowerView Hub: %s", err)
         return
 
-    for i, cover_id in enumerate(cover_ids.latest_data):
+    for cover_id in cover_ids.latest_data:
         covers.append(PowerView(hass, ip_address, cover_id))
 
     async_add_entities(covers, True)
@@ -65,13 +65,10 @@ class PowerView(CoverDevice):
         """Return True if entity is available."""
         return self._available
         
-################
-
     @property
     def is_closed(self):
         """Return if the cover is closed."""
         return self._cover_data.latest_data['positions']['position1'] < 1
-
 
     @property
     def current_cover_position(self):
@@ -80,7 +77,6 @@ class PowerView(CoverDevice):
 
     async def async_close_cover(self, **kwargs):
         """Close the cover."""
-
         body = {
             'shade': {
                 'positions': {
@@ -99,8 +95,6 @@ class PowerView(CoverDevice):
             
     async def async_open_cover(self, **kwargs):
         """Open the cover."""
-        position = 65535
-
         body = {
             'shade': {
                 'positions': {
