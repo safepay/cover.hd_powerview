@@ -3,7 +3,7 @@
 
 
 # Hunter Douglas / Luxaflex Cover for Home Assistant
-Home Assistant custom integration for controlling [Hunter Douglas](https://www.hunterdouglas.com/operating-systems/motorized/powerview-motorization) / [Luxaflex](https://www.luxaflex.com.au/products/smart-home-automation-and-motorisation/powerview-motorisation/) PowerView Bottom-Up Window Shades.
+Home Assistant custom component for controlling [Hunter Douglas](https://www.hunterdouglas.com/operating-systems/motorized/powerview-motorization) / [Luxaflex](https://www.luxaflex.com.au/products/smart-home-automation-and-motorisation/powerview-motorisation/) PowerView Bottom-Up Window Shades.
 
 This does not support Top-Down shades or tilting Venetian blinds.
 
