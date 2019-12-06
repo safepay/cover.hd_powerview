@@ -25,7 +25,7 @@ cover:
 ```
 
 ### Battery Levels
-You can extract the battery level with a sensor template. For example:
+If your shade has a battery, you can extract the battery_level attribute with a sensor template. For example:
 ```yaml
 sensor:
   - platform: template
