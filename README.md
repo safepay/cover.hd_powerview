@@ -1,3 +1,5 @@
+(https://img.shields.io/github/release/safepay/cover.hd_powerview.svg)](https://github.com/safepay/cover.hd_powerview) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
+
 # cover.hd_powerview
 Home Assistant component for controlling Hunter Douglas / Luxaflex PowerView Window Shades.
 
