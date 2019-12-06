@@ -3,11 +3,13 @@
 
 
 # cover.hd_powerview
-Home Assistant component for controlling Hunter Douglas / Luxaflex PowerView Window Shades.
+Home Assistant component for controlling [Hunter Douglas](https://www.hunterdouglas.com/operating-systems/motorized/powerview-motorization) / [Luxaflex](https://www.luxaflex.com.au/products/smart-home-automation-and-motorisation/powerview-motorisation/) PowerView Window Shades.
 
 This will read all the shades from the hub and present them as cover.name in Home Assistant.
 
 You can then make them go up, down, stop or go to a set position via a slider.
+
+Use the entities in automations to take direct control of your window shades.
 
 # Cover
 ## Installation
@@ -19,3 +21,17 @@ cover:
   - platform: hd_powerview
     host: your_hub_ip_address
 ```
+
+### Battery Levels
+You can extract the battery level with a sensor template. For example:
+```yaml
+sensor:
+  - platform: template
+    sensors:
+      shade_1_battery_level:
+        friendly_name: 'Shade 1 Battery Level'
+        value_template: '{{state_attr("cover.shade_1", "battery_level")}}'
+        unit_of_measurement: "%"
+        device_class: battery
+```
+Replace ```cover.shade_1``` with your cover's entity name and rename the sensor to suit your system.
