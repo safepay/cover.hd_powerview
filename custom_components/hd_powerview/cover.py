@@ -159,7 +159,7 @@ class PowerView:
 
     def get_status(self, shade):
         """Update status of shade."""
-        request = round((self.make_request("get","/api/shade/" + str(shade))['positions']['position1'] / 65535) * 100)
+        request = round((self.make_request("get","/api/shades/" + str(shade))['positions']['position1'] / 65535) * 100)
         return request
 
     def close_shade(self, shade):
