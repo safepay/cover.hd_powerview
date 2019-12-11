@@ -152,14 +152,14 @@ class PowerView:
         request = self.make_request("get","/api/shades/" + str(shade))
 
         if request != False:
-            shade = Shade(request['id'], b64decode(request['name']).decode('UTF-8'), round((request['positions']['position1'] / 65535) * 100), round(request['batteryStrength'] / 2))
+            shade = Shade(request['shade']['id'], b64decode(request['shade']['name']).decode('UTF-8'), round((request['shade']['positions']['position1'] / 65535) * 100), round(request['batteryStrength'] / 2))
             return shade
         else:
             return False
 
     def get_status(self, shade):
         """Update status of shade."""
-        request = round((self.make_request("get","/api/shade/" + str(shade))['positions']['position1'] / 65535) * 100)
+        request = round((self.make_request("get","/api/shade/" + str(shade))['shade']['positions']['position1'] / 65535) * 100)
         return request
 
     def close_shade(self, shade):
