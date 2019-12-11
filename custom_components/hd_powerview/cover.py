@@ -181,7 +181,7 @@ class PowerView:
         """Set a shade to a specific position."""
         if 0 <= position <= 100: 
             position = round(position * 65535 / 100)
-            self.make_request("put","/api/shades/" + str(shade), { "shade": { "positions": { "posKind1": 1, "position1": position } } })
+            self.make_request("put","/api/shades/" + str(shade), { "shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } } })
             return
         else:
             return False
