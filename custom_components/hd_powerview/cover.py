@@ -149,7 +149,7 @@ class PowerView:
 
     def get_shade(self, shade):
         """List all shades."""
-        request = self.make_request("get","/api/shades/" + str(shade))
+        request = self.make_request("get","/api/shades/" + str(shade) + "?refresh=true")
 
         if request != False:
             shade = Shade(request['shade']['id'], b64decode(request['shade']['name']).decode('UTF-8'), round((request['shade']['positions']['position1'] / 65535) * 100), round(request['shade']['batteryStrength'] / 2))
@@ -159,7 +159,7 @@ class PowerView:
 
     def get_status(self, shade):
         """Update status of shade."""
-        request = round((self.make_request("get","/api/shades/" + str(shade))['shade']['positions']['position1'] / 65535) * 100)
+        request = round((self.make_request("get","/api/shades/" + str(shade) + "?refresh=true")['shade']['positions']['position1'] / 65535) * 100)
         return request
 
     def close_shade(self, shade):
