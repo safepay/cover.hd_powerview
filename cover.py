@@ -152,7 +152,7 @@ class PowerView:
         request = self.make_request("get","/api/shades/" + str(shade))
 
         if request != False:
-            shade = Shade(request['shade']['id'], b64decode(request['shade']['name']).decode('UTF-8'), round((request['shade']['positions']['position1'] / 65535) * 100), round(request['batteryStrength'] / 2))
+            shade = Shade(request['shade']['id'], b64decode(request['shade']['name']).decode('UTF-8'), round((request['shade']['positions']['position1'] / 65535) * 100), round(request['shade']['batteryStrength'] / 2))
             return shade
         else:
             return False
