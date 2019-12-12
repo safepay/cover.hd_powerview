@@ -174,7 +174,7 @@ class PowerView:
 
     def set_shade_position(self, shade, position: int):
         """Set a shade to a specific position."""
-        self.make_request("put","/api/shades/" + str(shade), { "shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } } })
+        self.make_request("put","/api/shades/" + str(shade), { "shade": { "positions": { "posKind1": 1, "position1": position } } })
         return self.get_shade(shade, "true")
 
 class Shade:
