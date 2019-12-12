@@ -80,7 +80,7 @@ class HdPowerView(CoverDevice):
     async def async_set_cover_position(self, **kwargs):
         """Set the cover position."""
         if ATTR_POSITION in kwargs:
-            position = int(kwargs[ATTR_POSITION] / 100 * 65535)
+            position = round(kwargs[ATTR_POSITION] / 100 * 65535)
         self._cover_data.position = self._pv.set_shade_position(self._cover_id, position)
 
     @property
@@ -160,26 +160,22 @@ class PowerView:
     def close_shade(self, shade):
         """Close a shade."""
         self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "down"}})
-        return get_shade(shade, "true")
+        return self.get_shade(shade, "true")
 
     def open_shade(self, shade):
         """Open a shade."""
         self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "up"}})
-        return get_shade(shade, "true")
+        return self.get_shade(shade, "true")
 
     def stop_shade(self, shade):
         """Stop a shade."""
         request = self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "stop"}})
-        return get_shade(shade, "true")
+        return self.get_shade(shade, "true")
 
     def set_shade_position(self, shade, position: int):
         """Set a shade to a specific position."""
-        if 0 <= position <= 100: 
-            position = round(position * 65535 / 100)
-            self.make_request("put","/api/shades/" + str(shade), { "shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } } })
-            return get_shade(shade, "true")
-        else:
-            return False
+        self.make_request("put","/api/shades/" + str(shade), { "shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } } })
+        return self.get_shade(shade, "true")
 
 class Shade:
     """Class to represent a PowerView shade"""
