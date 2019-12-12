@@ -147,9 +147,9 @@ class PowerView:
         else:
             return False
 
-    def get_shade(self, shade):
+    def get_shade(self, shade, refresh="false"):
         """List all shades."""
-        request = self.make_request("get","/api/shades/" + str(shade) + "?refresh=true")
+        request = self.make_request("get","/api/shades/" + str(shade) + "?refresh=" + refresh)
 
         if request != False:
             shade = Shade(request['shade']['id'], b64decode(request['shade']['name']).decode('UTF-8'), round((request['shade']['positions']['position1'] / 65535) * 100), round(request['shade']['batteryStrength'] / 2))
@@ -157,32 +157,27 @@ class PowerView:
         else:
             return False
 
-    def get_status(self, shade):
-        """Update status of shade."""
-        request = round((self.make_request("get","/api/shades/" + str(shade) + "?refresh=true")['shade']['positions']['position1'] / 65535) * 100)
-        return request
-
     def close_shade(self, shade):
         """Close a shade."""
         self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "down"}})
-        return
+        return get_shade(shade, "true")
 
     def open_shade(self, shade):
         """Open a shade."""
         self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "up"}})
-        return
+        return get_shade(shade, "true")
 
     def stop_shade(self, shade):
         """Stop a shade."""
         request = self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "stop"}})
-        return
+        return get_shade(shade, "true")
 
     def set_shade_position(self, shade, position: int):
         """Set a shade to a specific position."""
         if 0 <= position <= 100: 
             position = round(position * 65535 / 100)
             self.make_request("put","/api/shades/" + str(shade), { "shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } } })
-            return
+            return get_shade(shade, "true")
         else:
             return False
 
