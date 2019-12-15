@@ -14,10 +14,14 @@ from base64 import b64decode
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_NAME = 'PowerView'
+CONF_VERSION = 'version'
+
+VERSIONS = {1,2}
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+    vol.Optional(CONF_VERSION, default=2): vol.In(VERSIONS),
 })
 
 ############
@@ -25,25 +29,29 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the PowerView covers."""
     ip_address = config[CONF_HOST]
+    hub_vers = config[CONF_VERSION]
 
     pv = PowerView(ip_address)
     cover_ids = pv.get_shades()
 
     covers = []
     for cover_id in cover_ids:
-        covers.append(HdPowerView(hass, pv, cover_id))
+        # Refresh the shade on initialisation
+        pv.get_shade(cover_id, "true")
+        covers.append(HdPowerView(hass, pv, cover_id, hub_vers))
     async_add_entities(covers, True)
 
 
 class HdPowerView(CoverDevice):
     """Representation of PowerView cover."""
-    def __init__(self, hass, pv, cover_id):
+    def __init__(self, hass, pv, cover_id, hub_vers):
         """Initialize the cover."""
         self.hass = hass
         self._pv = pv
         self._cover_id = cover_id
         self._available = True
         self._state = None
+        self._hub_vers = hub_vers
 
     @property
     def name(self):
@@ -91,7 +99,10 @@ class HdPowerView(CoverDevice):
     @property
     def supported_features(self):
         """Flag supported features."""
-        return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION | SUPPORT_STOP
+        if self._hub_vers == 2:
+            return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION | SUPPORT_STOP
+        else:
+            return SUPPORT_OPEN | SUPPORT_CLOSE | SUPPORT_SET_POSITION
 
     @property
     def device_state_attributes(self):
@@ -140,7 +151,8 @@ class PowerView:
 
     def get_shades(self):
         """List all shade Ids."""
-        request = self.make_request("get","/api/shades?refresh=true")
+        request = self.make_request("get","/api/shades")
+        #request = self.make_request("get","/api/extras")
 
         if request != False:
             return request['shadeIds']
@@ -169,7 +181,7 @@ class PowerView:
 
     def stop_shade(self, shade):
         """Stop a shade."""
-        self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "stop"}})
+        self.make_request("put","/api/shades/" + str(shade), {"shade": { "id": shade, "motion": "stop"}})
         return self.get_shade(shade, "true")
 
     def set_shade_position(self, shade, position: int):
