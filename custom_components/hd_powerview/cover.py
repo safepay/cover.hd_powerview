@@ -140,7 +140,7 @@ class PowerView:
 
     def get_shades(self):
         """List all shade Ids."""
-        request = self.make_request("get","/api/shades")
+        request = self.make_request("get","/api/shades?refresh=true")
 
         if request != False:
             return request['shadeIds']
@@ -159,22 +159,22 @@ class PowerView:
 
     def close_shade(self, shade):
         """Close a shade."""
-        self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "down"}})
+        self.make_request("put","/api/shades/" + str(shade), {"shade": { "id": shade, "positions": { "posKind1": 1, "position1": 0 } }})
         return self.get_shade(shade, "true")
 
     def open_shade(self, shade):
         """Open a shade."""
-        self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "up"}})
+        self.make_request("put","/api/shades/" + str(shade), {"shade": { "id": shade, "positions": { "posKind1": 1, "position1": 65535 } }})
         return self.get_shade(shade, "true")
 
     def stop_shade(self, shade):
         """Stop a shade."""
-        request = self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "stop"}})
+        self.make_request("put","/api/shades/" + str(shade), {"shade": {"motion": "stop"}})
         return self.get_shade(shade, "true")
 
     def set_shade_position(self, shade, position: int):
         """Set a shade to a specific position."""
-        self.make_request("put","/api/shades/" + str(shade), { "shade": { "positions": { "posKind1": 1, "position1": position } } })
+        self.make_request("put","/api/shades/" + str(shade), {"shade": { "id": shade, "positions": { "posKind1": 1, "position1": position } }})
         return self.get_shade(shade, "true")
 
 class Shade:
