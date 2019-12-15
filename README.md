@@ -19,10 +19,25 @@ Copy all the files to a custom_components/hd_powerview directory in your Home As
 
 ## Configuration
 ```yaml
+# Configuration for V2 hubs
 cover:
   - platform: hd_powerview
     host: your_hub_ip_address
 ```
+```yaml
+# Configuration for V1 hubs
+cover:
+  - platform: hd_powerview
+    host: your_hub_ip_address
+    version: 1
+```
+
+### Configuration Variables
+
+variable | required | type | default | description
+-------- | -------- | ---- | ------- | -----------
+``host`` | yes | string | | The local IP address of your PowerView hub.
+``version`` | no | number | 2 | The version of your PowerView hub.
 
 ### Battery Levels
 If your shade has a battery, you can extract the battery_level attribute with a sensor template. For example:
