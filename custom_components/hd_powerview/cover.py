@@ -126,6 +126,11 @@ class HdPowerView(CoverDevice):
         return self._cover_data.position < 1
 
     @property
+    def unique_id(self):
+        """Return the cover unique id."""
+        return f"{self._cover_id} cover"
+
+    @property
     def current_cover_position(self):
         """Return the cover position."""
         return self._cover_data.position
