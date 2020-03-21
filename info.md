@@ -1,4 +1,4 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/safepay/cover.hd_powerview) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/safepay/cover.hd_powerview) ![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
 
 # Hunter Douglas / Luxaflex Cover for Home Assistant
 Home Assistant custom component for controlling [Hunter Douglas](https://www.hunterdouglas.com/operating-systems/motorized/powerview-motorization) / [Luxaflex](https://www.luxaflex.com.au/products/smart-home-automation-and-motorisation/powerview-motorisation/) PowerView Bottom-Up Window Shades.
