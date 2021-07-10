@@ -1,0 +1,10 @@
+{
+  "domain": "hd_powerview",
+  "name": "PowerView",
+  "version": "0.9.0",
+  "documentation": "https://github.com/safepay/sensor.hd_powerview/blob/master/README.md",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@safepay"],
+  "iot_class": "local_poll"
+}
