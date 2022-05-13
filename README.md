@@ -1,4 +1,4 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/safepay/cover.hd_powerview) ![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/safepay/cover.hd_powerview) ![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
 
 
 
